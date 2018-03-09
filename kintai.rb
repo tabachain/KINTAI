@@ -12,9 +12,7 @@ PORT = 4567
 
 firsttime = ENV['APP_ID'] == nil && ENV['SECRET'] == nil
 if firsttime
-  puts 'bundle installしていない場合はbundle installを実行してください。(Enterで進む)'
-  STDIN.gets
-  puts '次に開くfreeeの画面でで@c-fo.comアカウントででfreeeにログインしておいてください。(Enterで進む)'
+  puts '次に開くfreeeの画面で@c-fo.comアカウントででfreeeにログインしておいてください。(Enterで進む)'
   STDIN.gets
   system 'open https://secure.freee.co.jp/'
   STDIN.gets
