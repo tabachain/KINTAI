@@ -1,4 +1,5 @@
 # 勤怠登録くん
+![result](https://github.com/tabachain/KINTAI/blob/gif/gif/demo.gif)
 
 人事労務freeeに10日前〜1日前の勤怠を登録します。
 パソコンのスリープのログを元に入力するので、パソコンを使う人ならば正確に勤怠がつけられます。
