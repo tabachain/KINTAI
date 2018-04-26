@@ -82,7 +82,7 @@ get '/oauth/callback' do
   me = access_token.get("#{HOST}/hr/api/v1/users/me").response.env[:body];nil
   emp_id = me['companies'].find{|c| c['name'] == 'フリー株式会社'}['employee_id']
 
-  ((Date.today - 10)..(Date.today - 1)).each do |date|
+  ((Date.today - 15)..(Date.today - 1)).each do |date|
     target_date = date.to_s
     lines = `pmset -g log | grep "Kernel Idle sleep preventers" | grep #{target_date}`
     if !date.workday?
