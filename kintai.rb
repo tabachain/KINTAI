@@ -54,10 +54,13 @@ get '/oauth/callback' do
     site: 'https://api.freee.co.jp/',
     authorize_url: '/oauth/authorize',
     token_url: '/oauth/token',
-    ssl: { verify: false },
+    ssl: { verify: false }
+  }
+
+  mode = {
     use_not_over_mode: ARGV.include?('NOT_OVER')
   }
-  if options[:use_not_over_mode]
+  if mode[:use_not_over_mode]
     puts '22時以降は忖度します'
   end
 
@@ -101,7 +104,7 @@ get '/oauth/callback' do
     start_time = times.first
     end_time = times.last
 
-    if end_time[0..1].to_i >= 22
+    if end_time[0..1].to_i >= 22 && mode[:use_not_over_mode]
       end_time = '22:00:00'
     end
     if access_token.get( "#{HOST}/hr/api/v1/employees/#{emp_id}/work_records/#{target_date}").response.env[:body]['clock_in_at'] != nil
