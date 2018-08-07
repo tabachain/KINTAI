@@ -101,7 +101,7 @@ get '/oauth/callback' do
     start_time = times.first
     end_time = times.last
 
-    if end_time[0..1].to_i >= 21
+    if end_time[0..1].to_i >= 22
       end_time = '22:00:00'
     end
     if access_token.get( "#{HOST}/hr/api/v1/employees/#{emp_id}/work_records/#{target_date}").response.env[:body]['clock_in_at'] != nil
