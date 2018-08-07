@@ -54,8 +54,12 @@ get '/oauth/callback' do
     site: 'https://api.freee.co.jp/',
     authorize_url: '/oauth/authorize',
     token_url: '/oauth/token',
-    ssl: { verify: false }
+    ssl: { verify: false },
+    use_not_over_mode: ARGV.include?('NOT_OVER')
   }
+  if options[:use_not_over_mode]
+    puts '22時以降は忖度します'
+  end
 
   client = OAuth2::Client.new(ENV['APP_ID'], ENV['SECRET'], options) do |conn|
     conn.request :url_encoded
@@ -96,6 +100,10 @@ get '/oauth/callback' do
     times = lines.split("\n").map {|line| line.match(/\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2})/)[1]}
     start_time = times.first
     end_time = times.last
+
+    if end_time[0..1].to_i >= 22
+      end_time = '22:00:00'
+    end
     if access_token.get( "#{HOST}/hr/api/v1/employees/#{emp_id}/work_records/#{target_date}").response.env[:body]['clock_in_at'] != nil
       puts "#{target_date} はすでに勤怠が登録されています"
       next
@@ -112,7 +120,7 @@ get '/oauth/callback' do
           }.to_json,
           :headers => {'Content-Type' => 'application/json'}
         }).response.env[:body]
-      puts "#{target_date} の勤怠をつけました"
+      puts "#{target_date} の勤怠を#{start_time}~#{end_time}でつけました"
     rescue => e
       puts e.message
     end
